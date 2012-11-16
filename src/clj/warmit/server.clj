@@ -1,4 +1,4 @@
-(ns cljs-hello.core
+(ns warmit.server
   (:require [noir.core :refer [defpage]]
             [noir.response :as resp]
             [noir.server :as server])

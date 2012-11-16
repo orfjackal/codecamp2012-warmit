@@ -1,4 +1,4 @@
-(ns cljs-hello.main)
+(ns warmit.core)
 
 (defn make-world []
   (let [geometry (THREE.CubeGeometry. 200 200 200)
