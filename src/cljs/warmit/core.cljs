@@ -3,7 +3,7 @@
             [warmit.world :as world]))
 (declare events)
 (defn make-square []
-  (let [geometry (THREE.CubeGeometry. (rand-int 200) (rand-int 200) 200)
+  (let [geometry (THREE.CubeGeometry. 200 200 50)
         material (THREE.MeshBasicMaterial. (js* "{color: 0xff0000,
                                                 wireframe: true}"))
         mesh (THREE.Mesh. geometry material)]
@@ -26,7 +26,11 @@
 (defn update-scene [scene world]
   (doseq [child (.-children scene)]
     (.remove scene child))
-  (.add scene (make-square)))
+  (let [catapult (:catapult world)
+        view (make-square)]
+    (.add scene view)
+    (.translateX view (:x catapult))
+    (.translateY view (:y catapult))))
 
 (defn animate [state]
   (let [state (update-in state [:world ] (fn [world]
@@ -34,6 +38,7 @@
     (reset! events [])
     (update-scene (:scene state) (:world state))
     (js/requestAnimationFrame (partial animate state))
+    (.log js/console (-> state :world :catapult :x))
     (.render (:renderer state) (:scene state) (:camera state))
     ))
 

@@ -4,9 +4,7 @@
 (defmulti update (fn [world [event value]] event))
 
 (defmethod update :left [world [_ value]]
-  (.log js/console "left")
-  (assoc-in world [:catapult] {:x 100 :y 100})
-  )
+  (update-in world [:catapult :x ] #(- % 20)))
 
 (defmethod update :right [world [_ value]]
   world)
