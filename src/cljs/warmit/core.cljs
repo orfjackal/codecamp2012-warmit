@@ -31,19 +31,30 @@
   (js/requestAnimationFrame (partial animate world))
   (.render renderer scene camera))
 
-(defmulti handle-keypress (fn [event] (.-which event)))
+; World updating
+(defmulti update-world (fn [world [event value]] event))
 
-(defmethod handle-keypress 32 [event]
-  (js/alert "SPACE"))
+(defmethod update-world :left [world [_ value]]
+  world)
 
-(defmethod handle-keypress 37 [event]
-  (js/alert "LEFT"))
+(defmethod update-world :right [world [_ value]]
+  world)
 
-(defmethod handle-keypress 39 [event]
-  (js/alert "RIGHT"))
+(defmethod update-world :space [world [_ value]]
+  world)
 
-(defmethod handle-keypress :default [event])
+(defmethod update-world :time  [world [_ value]]
+  world)
 
-(bind ($ js/document) "keydown" handle-keypress)
+; Input handling
+(def events (atom []))
 
+(def button-events {32 :space
+                    37 :left
+                    39 :right})
+
+(bind ($ js/document) "keydown" #(swap! events conj [(button-events (.-which %1)) :pressed]))
+(bind ($ js/document) "keyup"  #(swap! events conj [(button-events (.-which %1)) :released]))
+
+; Animation
 (animate (make-world))
