@@ -7,9 +7,9 @@
    :barrel {:fire-time 0
             :fire-x 0
             :landing-time 0
-            :launched? false
-            }}
-  )
+            :launched? false}
+   :iceberg {:speed-x 200, :x 0
+             :speed-y 0,  :y 500 #_(rand-int 500)}})
 
 (defn fire [world x force t] 
   (-> world 
@@ -42,4 +42,5 @@
 (defmethod update :dt  [world [_ value t]]
   (-> (update-firing world t)
     (update-in [:catapult :x] (partial + (* (ms-to-s value) (-> world :catapult :speed-x))))
-    (update-in [:catapult :force] (partial + (* (ms-to-s value) (-> world :catapult :speed-force))))))
+    (update-in [:catapult :force] (partial + (* (ms-to-s value) (-> world :catapult :speed-force))))
+    (update-in [:iceberg :x] (partial + (* (ms-to-s value) (-> world :iceberg :speed-x))))))
