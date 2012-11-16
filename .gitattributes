@@ -1,6 +1,7 @@
 *.txt           eol=lf
 *.md            eol=lf
 *.clj           eol=lf
+*.clsj          eol=lf
 *.js            eol=lf
 *.html          eol=lf
 *.xml           eol=lf
