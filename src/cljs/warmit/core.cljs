@@ -9,10 +9,15 @@
   (let [scene (THREE.Scene.)
         renderer (doto (THREE.CanvasRenderer.)
       (.setSize 1000 300))
+        light (doto (THREE.SpotLight. 0xaabbcc 1,25)
+                    (-> .-position (.set -500 900 600))
+                    (-> .-target .-position (.set 2000 0 2000))
+                    (-> .-castShadow (set! true)))
         camera (doto (THREE.PerspectiveCamera. 75 (/ (.-innerWidth js/window)
                                                     (.-innerHeight js/window))
                        1 10000)
       (-> .-position .-z (set! 1000)))]
+    (.add scene light)
     (-> js/document .-body (.appendChild (.-domElement renderer)))
     {:world {:catapult {:speed-x 0, :x 2000 
                         :speed-y 0, :y 100 
