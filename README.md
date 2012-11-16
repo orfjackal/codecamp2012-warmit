@@ -1,12 +1,10 @@
-# cljs-hello
+# WarmIt!
 
-I'm an app. Or maybe I'm a library? I haven't decided yet. 
-
-The choice is up to you!
+A game made in a single day.
 
 ## Usage
 
-FIXME
+Down arrow to arm catapult, space to shoot!
 
 ## License
 
