@@ -16,7 +16,12 @@
     (-> js/document .-body (.appendChild (.-domElement renderer)))
     {:world {:catapult {:speed-x 0, :x 2000 
                         :speed-y 0, :y 100 
-                        :speed-force 0, :force 0}}
+                        :speed-force 0, :force 0}
+             :barrel {:fire-time 0
+                      :fire-x 0
+                      :landing-time 0
+                      :launched? false
+                      }}
      :renderer renderer
      :scene scene
      :camera camera}))
@@ -45,7 +50,7 @@
   (let [cur-time (get-time)
         dt (- cur-time last-time)
         state (update-in state [:world ] (fn [world]
-                                           (reduce world/update world  (conj @events [:dt dt]))))]
+                                           (reduce world/update world  (conj @events [:dt dt cur-time]))))]
     (reset! events [])
     (update-scene (:scene state) (:world state))
     (js/requestAnimationFrame (partial animate state cur-time))
