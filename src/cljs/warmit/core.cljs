@@ -36,6 +36,15 @@
     (.translateZ square z)
     square))
 
+(defn make-iceberg [x y]
+  (let [geometry (THREE.CylinderGeometry. 200 200 10)
+        material (THREE.MeshBasicMaterial. (clj->js {:color 0xaaaaff, :wireframe false}))
+        square (THREE.Mesh. geometry material)]
+    (.translateX square (project-x x))
+    (.translateY square (project-y y))
+    (-> square .-rotation .-x (set! (/ (.-PI js/Math) 2))) 
+    square))
+
 (defn update-scene [scene world]
   (doseq [child (.-children scene)]
     (.remove scene child))
@@ -43,7 +52,7 @@
         iceberg (:iceberg world)
         barrel (:barrel world)]
     (.add scene (make-square (:x catapult) (:y catapult) 0 0xff0000))
-    (.add scene (make-square (:x iceberg) (:y iceberg) 0 0x0000ff))
+    (.add scene (make-iceberg (:x iceberg) (:y iceberg)))
     (when (:launched? barrel) (.add scene (make-square (:x barrel) (:y barrel) (:z barrel) 0x00ff00)))))
 
 
