@@ -12,7 +12,7 @@
 (defmethod update :space [world [_ value]]
   (assoc-in world [:catapult :is-firing] (= value :pressed)))
 
-(defmethod update :time  [world [_ value]]
+(defmethod update :dt  [world [_ value]]
   (-> world
     (update-in [:catapult :x] (partial + (-> world :catapult :speed-x)))
     (update-in [:catapult :force] (partial + (-> world :catapult :speed-force)))))

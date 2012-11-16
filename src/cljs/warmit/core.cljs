@@ -41,14 +41,18 @@
   (let [catapult (:catapult world)]
     (.add scene (make-square-at (:x catapult) (:y catapult)))))
 
-(defn animate [state]
-  (let [state (update-in state [:world ] (fn [world]
-                                           (reduce world/update world  (conj @events [:time 50]))))]
+
+(defn get-time [] (.getTime (js/Date.)))
+
+(defn animate [state last-time]
+  (let [cur-time (get-time)
+        dt (- cur-time last-time)
+        state (update-in state [:world ] (fn [world]
+                                           (reduce world/update world  (conj @events [:dt dt]))))]
     (reset! events [])
     (update-scene (:scene state) (:world state))
-    (js/requestAnimationFrame (partial animate state))
-    (.render (:renderer state) (:scene state) (:camera state))
-    ))
+    (js/requestAnimationFrame (partial animate state cur-time))
+    (.render (:renderer state) (:scene state) (:camera state))))
 
 ; Input handling
 (def events (atom []))
