@@ -28,14 +28,17 @@
         world (update-in world [:catapult :y ] #(+ 1 %))]
     world))
 
+(defn make-square-at [x y]
+  (let [square (make-square)]
+    (.translateX square (- x 2000))
+    (.translateY square (- y 800))
+    square))
+
 (defn update-scene [scene world]
   (doseq [child (.-children scene)]
     (.remove scene child))
-  (let [catapult (:catapult world)
-        view (make-square)]
-    (.add scene view)
-    (.translateX view (:x catapult))
-    (.translateY view (:y catapult))))
+  (let [catapult (:catapult world)]
+    (.add scene (make-square-at (:x catapult) (:y catapult)))))
 
 (defn animate [state]
   (let [state (update-in state [:world ] update-world)]
