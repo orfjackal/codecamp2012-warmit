@@ -1,4 +1,5 @@
-(ns warmit.core)
+(ns warmit.core
+  (:require [jayq.core :refer [$,bind]]))
 
 (defn make-world []
   (let [geometry (THREE.CubeGeometry. 200 200 200)
@@ -8,7 +9,7 @@
         scene (doto (THREE.Scene.)
                 (.add mesh))
         renderer (doto (THREE.CanvasRenderer.)
-                   (.setSize (- (.-innerWidth js/window) 100) (- (.-innerHeight js/window) 100)))
+                   (.setSize (- (.-innerWidth js/window) [] 100) (- (.-innerHeight js/window) 100)))
         camera (doto (THREE.PerspectiveCamera. 75 (/ (.-innerWidth js/window)
                                                      (.-innerHeight js/window))
                                                1 10000)
@@ -23,5 +24,7 @@
                 :as world}]
   (js/requestAnimationFrame (partial animate world))
   (.render renderer scene camera))
+
+(bind ($ js/document) "keydown" #(js/alert "KEYDOWN"))
 
 (animate (make-world))
