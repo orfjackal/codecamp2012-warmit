@@ -1,5 +1,6 @@
 (ns warmit.core
-  (:require [jayq.core :refer [$,bind]]))
+  (:require [jayq.core :refer [$,bind]]
+            [warmit.world :as world]))
 
 (defn make-square []
   (let [geometry (THREE.CubeGeometry. 200 200 200)
@@ -31,20 +32,6 @@
   (js/requestAnimationFrame (partial animate world))
   (.render renderer scene camera))
 
-; World updating
-(defmulti update-world (fn [world [event value]] event))
-
-(defmethod update-world :left [world [_ value]]
-  world)
-
-(defmethod update-world :right [world [_ value]]
-  world)
-
-(defmethod update-world :space [world [_ value]]
-  world)
-
-(defmethod update-world :time  [world [_ value]]
-  world)
 
 ; Input handling
 (def events (atom []))
