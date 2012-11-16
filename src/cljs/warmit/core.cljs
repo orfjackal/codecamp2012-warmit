@@ -54,15 +54,31 @@
     square))
 
 (defn update-scene [scene world]
-  #_(doseq [child (.-children scene)]
-    (.remove scene child))
+  (if (nil? (.getChildByName scene "catapult" false))
+    (.add scene (doto (make-square 0 0 0 0xff0000)
+                  (-> .-name (set! "catapult")))))
+  (if (nil? (.getChildByName scene "iceberg" false))
+    (.add scene (doto (make-iceberg 0 0)
+                  (-> .-name (set! "iceberg")))))
+  (if (nil? (.getChildByName scene "barrel" false))
+    (.add scene (doto (make-square 0 0 0 0x00ff00)
+                  (-> .-name (set! "barrel")))))
   (let [catapult (:catapult world)
         iceberg (:iceberg world)
         barrel (:barrel world)]
-    (.add scene (make-square (:x catapult) (:y catapult) 0 0xff0000))
-    (.add scene (make-iceberg (:x iceberg) (:y iceberg)))
-    (when (:launched? barrel) (.add scene (make-square (:x barrel) (:y barrel) (:z barrel) 0x00ff00)))))
-
+    (doto (.getChildByName scene "catapult" false)
+      (-> .-position .-x (set! (project-x (:x catapult))))
+      (-> .-position .-y (set! (project-y (:y catapult)))))
+    (doto (.getChildByName scene "iceberg" false)
+      (-> .-position .-x (set! (project-x (:x iceberg))))
+      (-> .-position .-y (set! (project-y (:y iceberg)))))
+    (if (:launched? barrel)
+      (doto (.getChildByName scene "barrel" false)
+        (-> .-position .-x (set! (project-x (:x barrel))))
+        (-> .-position .-y (set! (project-y (:y barrel))))
+        (-> .-position .-z (set! (:z barrel))))
+      (doto (.getChildByName scene "barrel" false)
+        (-> .-position .-y (set! (project-y 1000000)))))))
 
 (defn get-time [] (.getTime (js/Date.)))
 
