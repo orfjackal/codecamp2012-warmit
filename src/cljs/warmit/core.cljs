@@ -42,6 +42,8 @@
 (defmethod handle-keypress 39 [event]
   (js/alert "RIGHT"))
 
+(defmethod handle-keypress :default [event])
+
 (bind ($ js/document) "keydown" handle-keypress)
 
 (animate (make-world))
