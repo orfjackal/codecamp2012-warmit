@@ -71,4 +71,4 @@
 (bind-button-handler "keyup" :released )
 
 ; Animation
-(animate (make-world))
+(animate (make-world) (get-time))
