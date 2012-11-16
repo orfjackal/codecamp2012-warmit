@@ -4,7 +4,8 @@
   :license {:name "WTFPL"
             :url "http://sam.zoy.org/wtfpl/"}
   :dependencies [[org.clojure/clojure "1.4.0"]
-                 [noir "1.3.0-beta10"]]
+                 [noir "1.3.0-beta10"]
+                 [jayq "0.2.0"]]
   :plugins [[lein-cljsbuild "0.2.9"]]
   :source-paths ["src/clj"]
   :cljsbuild {:builds [{:source-path "src/cljs"
