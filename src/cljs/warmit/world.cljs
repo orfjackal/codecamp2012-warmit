@@ -1,5 +1,8 @@
 (ns warmit.world)
 
+(defn random-y []
+  (+ (rand-int 1000) 500))
+
 (def initial-world 
   {:catapult {:speed-x 0, :x 2000 
               :speed-y 0, :y 100 
@@ -8,8 +11,8 @@
             :fire-x 0
             :landing-time 0
             :launched? false}
-   :iceberg {:speed-x 200, :x 0
-             :speed-y 0,  :y 500 #_(rand-int 500)}})
+   :iceberg {:speed-x 600, :x 0
+             :speed-y 0,  :y (random-y)}})
 
 (defn fire [world x force t] 
   (-> world 
@@ -37,10 +40,18 @@
 (defmethod update :space [world [_ value & _]]
   (assoc-in world [:catapult :speed-force] (if (= value :pressed) 100 0)))
 
+(defn reposition-iceberg [world]
+  (if (< 4000 (-> world :iceberg :x))
+    (-> world
+      (assoc-in [:iceberg :x] 0)
+      (assoc-in [:iceberg :y] (random-y)))
+    world))
+
 (defn ms-to-s [ms] (* ms 0.001))
 
 (defmethod update :dt  [world [_ value t]]
   (-> (update-firing world t)
     (update-in [:catapult :x] (partial + (* (ms-to-s value) (-> world :catapult :speed-x))))
     (update-in [:catapult :force] (partial + (* (ms-to-s value) (-> world :catapult :speed-force))))
-    (update-in [:iceberg :x] (partial + (* (ms-to-s value) (-> world :iceberg :speed-x))))))
+    (update-in [:iceberg :x] (partial + (* (ms-to-s value) (-> world :iceberg :speed-x))))
+    reposition-iceberg))
