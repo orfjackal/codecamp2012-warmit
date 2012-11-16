@@ -1,14 +1,9 @@
 (ns warmit.core
-  (:require [jayq.core :refer [$,bind]]
+  (:require [jayq.core :refer [$ bind]]
+            [jayq.util :refer [clj->js]]
             [warmit.world :as world]))
 
 (declare events)
-(defn make-square []
-  (let [geometry (THREE.CubeGeometry. 200 200 50)
-        material (THREE.MeshBasicMaterial. (js* "{color: 0xff0000,
-                                                wireframe: true}"))
-        mesh (THREE.Mesh. geometry material)]
-    mesh))
 
 (defn make-world []
   (let [scene (THREE.Scene.)
@@ -29,8 +24,10 @@
 (defn project-x [x] (- x 2000))
 (defn project-y [y] (- y 800))
 
-(defn make-square-at [x y]
-  (let [square (make-square)]
+(defn make-square [x y color]
+  (let [geometry (THREE.CubeGeometry. 200 200 50)
+        material (THREE.MeshBasicMaterial. (clj->js {:color color, :wireframe true}))
+        square (THREE.Mesh. geometry material)]
     (.translateX square (project-x x))
     (.translateY square (project-y y))
     square))
@@ -39,7 +36,7 @@
   (doseq [child (.-children scene)]
     (.remove scene child))
   (let [catapult (:catapult world)]
-    (.add scene (make-square-at (:x catapult) (:y catapult)))))
+    (.add scene (make-square (:x catapult) (:y catapult) 0xff0000))))
 
 
 (defn get-time [] (.getTime (js/Date.)))
