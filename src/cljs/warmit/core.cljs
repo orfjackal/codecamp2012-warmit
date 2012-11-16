@@ -47,7 +47,6 @@
     (reset! events [])
     (update-scene (:scene state) (:world state))
     (js/requestAnimationFrame (partial animate state))
-    (.log js/console (-> state :world :catapult :x ))
     (.render (:renderer state) (:scene state) (:camera state))
     ))
 
