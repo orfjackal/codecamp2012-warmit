@@ -44,7 +44,7 @@
     square))
 
 (defn make-iceberg [x y]
-  (let [geometry (THREE.CylinderGeometry. 200 200 10)
+  (let [geometry (THREE.CylinderGeometry. 250 250 40)
         snow-texture (.loadTexture js/THREE.ImageUtils "textures/snow.jpg")
         material (THREE.MeshBasicMaterial. (clj->js {:map snow-texture, :color 0xaaaaff, :wireframe false}))
         square (THREE.Mesh. geometry material)]
