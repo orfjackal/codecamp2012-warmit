@@ -8,7 +8,7 @@
 (defn make-world []
   (let [scene (THREE.Scene.)
         renderer (doto (THREE.CanvasRenderer.)
-      (.setSize 1000 300))
+      (.setSize 1000 600))
         light (doto (THREE.SpotLight. 0xaabbcc 1,25)
                     (-> .-position (.set -500 900 600))
                     (-> .-target .-position (.set 2000 0 2000))

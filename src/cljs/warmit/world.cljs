@@ -23,7 +23,7 @@
   (-> barrel
      (update-in [:y] #(+ % (* 20 (-> barrel :dy) (ms-to-s dt))))
      (update-in [:z] #(+ % (* 20 (-> barrel :dz) (ms-to-s dt))))
-     (update-in [:dz] #(- % (* 500 (ms-to-s dt))))))
+     (update-in [:dz] #(- % (* 150 (ms-to-s dt))))))
 
 (defn update-barrel [world dt]
     (if (-> world :barrel :launched?) 
