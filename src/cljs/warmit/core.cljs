@@ -8,16 +8,24 @@
 (defn make-world []
   (let [scene (THREE.Scene.)
         renderer (doto (THREE.CanvasRenderer.)
-      (.setSize 1000 600))
+                       (.setSize 1000 600))
         light (doto (THREE.SpotLight. 0xaabbcc 1,25)
                     (-> .-position (.set -500 900 600))
                     (-> .-target .-position (.set 2000 0 2000))
                     (-> .-castShadow (set! true)))
+        plane (doto (THREE.Mesh. (THREE.PlaneGeometry. 5000 5000) (THREE.MeshBasicMaterial. (clj->js {:color 0xcccccc})))
+                    (-> .-overdraw (set! true))
+                    (-> .-position .-x (set! 0))
+                    (-> .-position .-y (set! 0))
+                    (-> .-position .-z (set! 0)))
         camera (doto (THREE.PerspectiveCamera. 75 (/ (.-innerWidth js/window)
                                                     (.-innerHeight js/window))
-                       1 10000)
-      (-> .-position .-z (set! 1000)))]
+                                                  1 10000)
+                     (-> .-position .-x (set! (* 45 (/ js/Math.PI 180))))
+                     (-> .-position .-y (set! -450))
+                     (-> .-position .-z (set! 1000)))]
     (.add scene light)
+    (.add scene plane)
     (-> js/document .-body (.appendChild (.-domElement renderer)))
     {:world world/initial-world
      :renderer renderer
@@ -46,7 +54,7 @@
     square))
 
 (defn update-scene [scene world]
-  (doseq [child (.-children scene)]
+  #_(doseq [child (.-children scene)]
     (.remove scene child))
   (let [catapult (:catapult world)
         iceberg (:iceberg world)
