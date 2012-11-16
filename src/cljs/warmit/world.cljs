@@ -14,7 +14,7 @@
             :dy 0
             :launched? false
             }
-   :iceberg {:speed-x 600, :x -1500
+   :iceberg {:speed-x 600, :x -1200
              :speed-y 0,  :y (random-y)}})
 
 (defn ms-to-s [ms] (* ms 0.001))
@@ -68,7 +68,7 @@
 (defn reposition-iceberg [world]
   (if (< 6000 (-> world :iceberg :x))
     (-> world
-      (assoc-in [:iceberg :x] 0)
+      (assoc-in [:iceberg :x] -1200)
       (assoc-in [:iceberg :y] (random-y)))
     world))
 
