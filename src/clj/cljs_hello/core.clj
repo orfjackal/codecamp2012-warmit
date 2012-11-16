@@ -1,9 +1,12 @@
 (ns cljs-hello.core
   (:require [noir.core :refer [defpage]]
-            [noir.server :as server]
-            #_[hiccup :refer [html ]]))
+            [noir.response :as resp]
+            [noir.server :as server])
+  (:gen-class ))
 
 (defpage "/" []
-  "trololoo jee asdfasdf")
+  (resp/redirect "/index.html"))
 
-(server/start 8080)
+(server/start 8070)
+
+(defn -main [& args])

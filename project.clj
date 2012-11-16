@@ -7,8 +7,8 @@
                  [noir "1.3.0-beta10"]]
   :plugins [[lein-cljsbuild "0.2.9"]]
   :source-paths ["src/clj"]
-  :cljsbuild
-  {:builds [{:source-path "src/cljs"
-             :compiler {:output-to "resources/public/js/cljs_hello.js"
-                        :optimizations :whitespace
-                        :pretty-print true}}]})
+  :cljsbuild {:builds [{:source-path "src/cljs"
+                        :compiler {:output-to "resources/public/js/cljs_hello.js"
+                                   :optimizations :whitespace
+                                   :pretty-print true}}]}
+  :main cljs-hello.core)
