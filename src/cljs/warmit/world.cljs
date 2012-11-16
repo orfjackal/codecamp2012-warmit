@@ -14,20 +14,23 @@
 
 (defn ms-to-s [ms] (* ms 0.001))
 
-(defn next-barrel-position [barrel dt] barrel
-  #_(-> barrel
+(defn next-barrel-position [barrel dt]
+  (-> barrel
      (update-in [:y] #(+ % (* 2000 (ms-to-s dt))))
-     (update-in [:z] #(+ % (* 1000 (ms-to-s (-> barrel :dz)))))
+     (update-in [:z] #(+ % (* 1000 (-> barrel :dz) (ms-to-s dt))))
      (update-in [:dz] #(- % (* 500 (ms-to-s dt))))))
 
 (defn update-barrel [world dt]
-  (if (-> world :barrel :launched?) 
-    (assoc-in world [:barrel] (next-barrel-position (-> world :barrel) dt))
-    world))
+    (if (-> world :barrel :launched?) 
+      (do
+        (.log js/console (-> world :barrel :z))
+        (assoc-in world [:barrel] (next-barrel-position (-> world :barrel) dt))
+        )
+      world))
 
 
 (defn fire [world x force t]
-  (-> world
+    (-> world
     (assoc-in [:barrel :x] (-> world :catapult :x))
     (assoc-in [:barrel :y] (-> world :catapult :y))
     (assoc-in [:barrel :z] 0)
@@ -37,9 +40,8 @@
 (defn update-firing [world t]
   (if (and (= (-> world :catapult :speed-force) 0)
            (not= (-> world :catapult :force) 0))
-    (do 
-      (fire world (-> world :catapult :x) (-> world :catapult :force) t)
-      (assoc-in world [:catapult :force] 0))  
+    (do
+      (assoc-in (fire world (-> world :catapult :x) (-> world :catapult :force) t) [:catapult :force] 0))  
     world))
 
 ; World updating
@@ -54,7 +56,7 @@
 (defmethod update :space [world [_ value & _]]
   (assoc-in world [:catapult :speed-force] (if (= value :pressed) 100 0)))
 
-(defmethod update :dt  [world [_ value t]]
+(defmethod update :dt [world [_ value t]]
   (-> (update-firing world t)
     (update-barrel value)
     (update-in [:catapult :x] (partial + (* (ms-to-s value) (-> world :catapult :speed-x))))
