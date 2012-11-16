@@ -1,6 +1,7 @@
 (ns warmit.core
   (:require [jayq.core :refer [$,bind]]
             [warmit.world :as world]))
+
 (declare events)
 (defn make-square []
   (let [geometry (THREE.CubeGeometry. 200 200 50)
@@ -18,17 +19,20 @@
                        1 10000)
       (-> .-position .-z (set! 1000)))]
     (-> js/document .-body (.appendChild (.-domElement renderer)))
-    {:world {:catapult {:speed-x 0, :x 200 
+    {:world {:catapult {:speed-x 0, :x 2000 
                         :speed-y 0, :y 100 
                         :speed-force 0, :force 0}}
      :renderer renderer
      :scene scene
      :camera camera}))
 
+(defn project-x [x] (- x 2000))
+(defn project-y [y] (- y 800))
+
 (defn make-square-at [x y]
   (let [square (make-square)]
-    (.translateX square (- x 2000))
-    (.translateY square (- y 800))
+    (.translateX square (project-x x))
+    (.translateY square (project-y y))
     square))
 
 (defn update-scene [scene world]
@@ -43,7 +47,7 @@
     (reset! events [])
     (update-scene (:scene state) (:world state))
     (js/requestAnimationFrame (partial animate state))
-    (.log js/console (-> state :world :catapult :x))
+    (.log js/console (-> state :world :catapult :x ))
     (.render (:renderer state) (:scene state) (:camera state))
     ))
 
@@ -60,8 +64,8 @@
               (swap! events conj [event value])))]
     (bind ($ js/document) jquery-event-name handler)))
 
-(bind-button-handler "keydown" :pressed)
-(bind-button-handler "keyup" :released)
+(bind-button-handler "keydown" :pressed )
+(bind-button-handler "keyup" :released )
 
 ; Animation
 (animate (make-world))
