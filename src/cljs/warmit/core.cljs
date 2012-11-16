@@ -25,6 +25,17 @@
   (js/requestAnimationFrame (partial animate world))
   (.render renderer scene camera))
 
-(bind ($ js/document) "keydown" #(js/alert "KEYDOWN"))
+(defmulti handle-keypress (fn [event] (.-which event)))
+
+(defmethod handle-keypress 32 [event]
+  (js/alert "SPACE"))
+
+(defmethod handle-keypress 37 [event]
+  (js/alert "LEFT"))
+
+(defmethod handle-keypress 39 [event]
+  (js/alert "RIGHT"))
+
+(bind ($ js/document) "keydown" handle-keypress)
 
 (animate (make-world))
