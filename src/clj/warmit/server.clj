@@ -7,6 +7,5 @@
 (defpage "/" []
   (resp/redirect "/index.html"))
 
-(server/start 8070)
-
-(defn -main [& args])
+(defn -main [& args]
+  (server/start 8070))
