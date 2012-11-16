@@ -2,7 +2,7 @@
 /lib
 /classes
 /checkouts
-pom.xml
+/pom.xml
 *.jar
 *.class
 .lein-deps-sum
@@ -10,3 +10,8 @@ pom.xml
 .lein-plugins
 /.idea
 /*.iml
+/.classpath
+/.lein-cljsbuild-compiler-*/
+/.project
+/.settings/
+/bin/
