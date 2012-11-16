@@ -53,6 +53,16 @@
     (-> square .-rotation .-x (set! (/ (.-PI js/Math) 2))) 
     square))
 
+(defn make-barrel [x y]
+  (let [geometry (THREE.CylinderGeometry. 60 60 80)
+        material (THREE.MeshBasicMaterial. (clj->js {:color 0x00ee00, :wireframe false}))
+        square (THREE.Mesh. geometry material)]
+    (.translateX square (project-x x))
+    (.translateY square (project-y y)) 
+    (-> square .-rotation .-z (set! (/ (.-PI js/Math) 8)))
+    square))
+
+
 (defn update-scene [scene world]
   (if (nil? (.getChildByName scene "catapult" false))
     (.add scene (doto (make-square 0 0 0 0xff0000)
@@ -61,7 +71,7 @@
     (.add scene (doto (make-iceberg 0 0)
                   (-> .-name (set! "iceberg")))))
   (if (nil? (.getChildByName scene "barrel" false))
-    (.add scene (doto (make-square 0 0 0 0x00ff00)
+    (.add scene (doto (make-barrel 0 0)
                   (-> .-name (set! "barrel")))))
   (let [catapult (:catapult world)
         iceberg (:iceberg world)
