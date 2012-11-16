@@ -3,7 +3,7 @@
             [warmit.world :as world]))
 
 (defn make-square []
-  (let [geometry (THREE.CubeGeometry. 200 200 200)
+  (let [geometry (THREE.CubeGeometry. (rand-int 200) (rand-int 200) 200)
         material (THREE.MeshBasicMaterial. (js* "{color: 0xff0000,
                                                 wireframe: true}"))
         mesh (THREE.Mesh. geometry material)]
@@ -18,19 +18,25 @@
                        1 10000)
       (-> .-position .-z (set! 1000)))]
     (-> js/document .-body (.appendChild (.-domElement renderer)))
-    {:state {}
+    {:world {}
      :renderer renderer
      :scene scene
      :camera camera}))
 
-(defn animate [{:keys [state renderer scene camera]
-                :as world}]
+(defn update-world [world]
+  {:catapult {:x 200 :y 100}})
 
-  ; TODO: extract game loop
-  (.add scene (make-square))
+(defn update-scene [scene world]
+  (doseq [child (.-children scene)]
+    (.remove scene child))
+  (.add scene (make-square)))
 
-  (js/requestAnimationFrame (partial animate world))
-  (.render renderer scene camera))
+(defn animate [state]
+  (let [state (update-in state [:world ] update-world)]
+    (update-scene (:scene state) (:world state))
+
+    (js/requestAnimationFrame (partial animate state))
+    (.render (:renderer state) (:scene state) (:camera state))))
 
 
 ; Input handling
