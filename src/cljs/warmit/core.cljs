@@ -13,14 +13,13 @@
                     (-> .-position (.set -500 900 600))
                     (-> .-target .-position (.set 2000 0 2000))
                     (-> .-castShadow (set! true)))
-        plane (doto (THREE.Mesh. (THREE.PlaneGeometry. 20000 5000) (THREE.MeshBasicMaterial. (clj->js {:color 0xddddff})))
+        sea-texture (.loadTexture js/THREE.ImageUtils "textures/water1.jpg")
+        plane (doto (THREE.Mesh. (THREE.PlaneGeometry. 20000 5000) (THREE.MeshBasicMaterial. (clj->js {:map sea-texture, :color 0xddddff})))
                     (-> .-overdraw (set! true))
                     (-> .-position .-x (set! 0))
                     (-> .-position .-y (set! 3000))
                     (-> .-position .-z (set! -1000)))
-        camera (doto (THREE.PerspectiveCamera. 75 (/ (.-innerWidth js/window)
-                                                    (.-innerHeight js/window))
-                                                  1 10000)
+        camera (doto (THREE.PerspectiveCamera. 75 (/ 1000 600) 1 10000)
                      (-> .-rotation .-x (set! (/ js/Math.PI 4)))
                      (-> .-position .-y (set! -1450))
                      (-> .-position .-z (set! 1000)))]
@@ -46,7 +45,8 @@
 
 (defn make-iceberg [x y]
   (let [geometry (THREE.CylinderGeometry. 200 200 10)
-        material (THREE.MeshBasicMaterial. (clj->js {:color 0xaaaaff, :wireframe false}))
+        snow-texture (.loadTexture js/THREE.ImageUtils "textures/snow.jpg")
+        material (THREE.MeshBasicMaterial. (clj->js {:map snow-texture, :color 0xaaaaff, :wireframe false}))
         square (THREE.Mesh. geometry material)]
     (.translateX square (project-x x))
     (.translateY square (project-y y))
