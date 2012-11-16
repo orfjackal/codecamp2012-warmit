@@ -27,21 +27,24 @@
 (defn project-x [x] (- x 2000))
 (defn project-y [y] (- y 800))
 
-(defn make-square [x y color]
+(defn make-square [x y z color]
   (let [geometry (THREE.CubeGeometry. 200 200 50)
         material (THREE.MeshBasicMaterial. (clj->js {:color color, :wireframe true}))
         square (THREE.Mesh. geometry material)]
     (.translateX square (project-x x))
     (.translateY square (project-y y))
+    (.translateZ square z)
     square))
 
 (defn update-scene [scene world]
   (doseq [child (.-children scene)]
     (.remove scene child))
   (let [catapult (:catapult world)
-        iceberg (:iceberg world)]
-    (.add scene (make-square (:x catapult) (:y catapult) 0xff0000))
-    (.add scene (make-square (:x iceberg) (:y iceberg) 0x0000ff))))
+        iceberg (:iceberg world)
+        barrel (:barrel world)]
+    (.add scene (make-square (:x catapult) (:y catapult) 0 0xff0000))
+    (.add scene (make-square (:x iceberg) (:y iceberg) 0 0x0000ff))
+    (.add scene (make-square (:x barrel) (:y barrel) (:z barrel) 0x00ff00))))
 
 
 (defn get-time [] (.getTime (js/Date.)))

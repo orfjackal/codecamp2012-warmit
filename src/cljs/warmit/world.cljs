@@ -11,6 +11,7 @@
             :y 0
             :z 0
             :dz 0
+            :dy 0
             :launched? false
             }
    :iceberg {:speed-x 600, :x 0
@@ -20,8 +21,8 @@
 
 (defn next-barrel-position [barrel dt]
   (-> barrel
-     (update-in [:y] #(+ % (* 2000 (ms-to-s dt))))
-     (update-in [:z] #(+ % (* 1000 (-> barrel :dz) (ms-to-s dt))))
+     (update-in [:y] #(+ % (* 20 (-> barrel :dy) (ms-to-s dt))))
+     (update-in [:z] #(+ % (* 20 (-> barrel :dz) (ms-to-s dt))))
      (update-in [:dz] #(- % (* 500 (ms-to-s dt))))))
 
 (defn update-barrel [world dt]
@@ -38,7 +39,8 @@
     (assoc-in [:barrel :x] (-> world :catapult :x))
     (assoc-in [:barrel :y] (-> world :catapult :y))
     (assoc-in [:barrel :z] 0)
-    (assoc-in [:barrel :dz] 10)
+    (assoc-in [:barrel :dz] (-> world :catapult :force))
+    (assoc-in [:barrel :dy] (-> world :catapult :force))
     (assoc-in [:barrel :launched?] true)))
 
 (defn update-firing [world t]
