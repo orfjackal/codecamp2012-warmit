@@ -20,10 +20,13 @@
 (defn ms-to-s [ms] (* ms 0.001))
 
 (defn next-barrel-position [barrel dt]
-  (-> barrel
-     (update-in [:y] #(+ % (* 20 (-> barrel :dy) (ms-to-s dt))))
-     (update-in [:z] #(+ % (* 20 (-> barrel :dz) (ms-to-s dt))))
-     (update-in [:dz] #(- % (* 150 (ms-to-s dt))))))
+  (if (> (-> barrel :z) -5)
+     (-> barrel
+       (update-in [:y] #(+ % (* 20 (-> barrel :dy) (ms-to-s dt))))
+       (update-in [:z] #(+ % (* 20 (-> barrel :dz) (ms-to-s dt))))
+       (update-in [:dz] #(- % (* 150 (ms-to-s dt)))))
+     (-> barrel
+       (assoc-in [:launched?] false))))
 
 (defn update-barrel [world dt]
     (if (-> world :barrel :launched?) 

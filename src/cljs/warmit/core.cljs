@@ -44,7 +44,7 @@
         barrel (:barrel world)]
     (.add scene (make-square (:x catapult) (:y catapult) 0 0xff0000))
     (.add scene (make-square (:x iceberg) (:y iceberg) 0 0x0000ff))
-    (.add scene (make-square (:x barrel) (:y barrel) (:z barrel) 0x00ff00))))
+    (when (:launched? barrel) (.add scene (make-square (:x barrel) (:y barrel) (:z barrel) 0x00ff00)))))
 
 
 (defn get-time [] (.getTime (js/Date.)))
