@@ -19,14 +19,7 @@
       (-> .-position .-z (set! 1000)))]
     (.add scene light)
     (-> js/document .-body (.appendChild (.-domElement renderer)))
-    {:world {:catapult {:speed-x 0, :x 2000 
-                        :speed-y 0, :y 100 
-                        :speed-force 0, :force 0}
-             :barrel {:fire-time 0
-                      :fire-x 0
-                      :landing-time 0
-                      :launched? false
-                      }}
+    {:world world/initial-world
      :renderer renderer
      :scene scene
      :camera camera}))
