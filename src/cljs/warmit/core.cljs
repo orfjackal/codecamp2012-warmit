@@ -18,7 +18,9 @@
                        1 10000)
       (-> .-position .-z (set! 1000)))]
     (-> js/document .-body (.appendChild (.-domElement renderer)))
-    {:world {:catapult {:x 200 :y 100}}
+    {:world {:catapult {:speed-x 0, :x 200 
+                        :speed-y 0, :y 100 
+                        :speed-force 0, :force 0}}
      :renderer renderer
      :scene scene
      :camera camera}))
@@ -37,7 +39,7 @@
 
 (defn animate [state]
   (let [state (update-in state [:world ] (fn [world]
-                                           (reduce world/update world @events)))]
+                                           (reduce world/update world  (conj @events [:time 50]))))]
     (reset! events [])
     (update-scene (:scene state) (:world state))
     (js/requestAnimationFrame (partial animate state))

@@ -4,13 +4,15 @@
 (defmulti update (fn [world [event value]] event))
 
 (defmethod update :left [world [_ value]]
-  (update-in world [:catapult :x ] #(- % 20)))
+  (assoc-in world [:catapult :speed-x] (if (= value :pressed) -20 0)))
 
 (defmethod update :right [world [_ value]]
-  world)
+  (assoc-in world [:catapult :speed-x] (if (= value :pressed) 20 0)))
 
 (defmethod update :space [world [_ value]]
-  world)
+  (assoc-in world [:catapult :is-firing] (= value :pressed)))
 
 (defmethod update :time  [world [_ value]]
-  world)
+  (-> world
+    (update-in [:catapult :x] (partial + (-> world :catapult :speed-x)))
+    (update-in [:catapult :force] (partial + (-> world :catapult :speed-force)))))
