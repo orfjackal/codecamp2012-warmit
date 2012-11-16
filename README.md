@@ -10,6 +10,6 @@ FIXME
 
 ## License
 
-Copyright © 2012 FIXME
+Copyright © 2012 Solita
 
-Distributed under the Eclipse Public License, the same as Clojure.
+Distributed under the Do What The Fuck You Want To Public License
