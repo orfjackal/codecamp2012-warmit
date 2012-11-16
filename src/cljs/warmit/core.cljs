@@ -8,7 +8,7 @@
         scene (doto (THREE.Scene.)
                 (.add mesh))
         renderer (doto (THREE.CanvasRenderer.)
-                   (.setSize (.-innerWidth js/window) (.-innerHeight js/window)))
+                   (.setSize (- (.-innerWidth js/window) 100) (- (.-innerHeight js/window) 100)))
         camera (doto (THREE.PerspectiveCamera. 75 (/ (.-innerWidth js/window)
                                                      (.-innerHeight js/window))
                                                1 10000)
