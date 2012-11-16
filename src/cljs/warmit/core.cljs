@@ -1,27 +1,33 @@
 (ns warmit.core
   (:require [jayq.core :refer [$,bind]]))
 
-(defn make-world []
+(defn make-square []
   (let [geometry (THREE.CubeGeometry. 200 200 200)
         material (THREE.MeshBasicMaterial. (js* "{color: 0xff0000,
                                                 wireframe: true}"))
-        mesh (THREE.Mesh. geometry material)
-        scene (doto (THREE.Scene.)
-                (.add mesh))
+        mesh (THREE.Mesh. geometry material)]
+    mesh))
+
+(defn make-world []
+  (let [scene (THREE.Scene.)
         renderer (doto (THREE.CanvasRenderer.)
-                   (.setSize (- (.-innerWidth js/window) [] 100) (- (.-innerHeight js/window) 100)))
+      (.setSize 1000 300))
         camera (doto (THREE.PerspectiveCamera. 75 (/ (.-innerWidth js/window)
-                                                     (.-innerHeight js/window))
-                                               1 10000)
-                 (-> .-position .-z (set! 1000)))]
+                                                    (.-innerHeight js/window))
+                       1 10000)
+      (-> .-position .-z (set! 1000)))]
     (-> js/document .-body (.appendChild (.-domElement renderer)))
-    {:mesh mesh
+    {:state {}
      :renderer renderer
      :scene scene
      :camera camera}))
 
-(defn animate [{:keys [mesh renderer scene camera]
+(defn animate [{:keys [state renderer scene camera]
                 :as world}]
+
+  ; TODO: extract game loop
+  (.add scene (make-square))
+
   (js/requestAnimationFrame (partial animate world))
   (.render renderer scene camera))
 
