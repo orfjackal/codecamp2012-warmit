@@ -38,8 +38,10 @@
 (defn update-scene [scene world]
   (doseq [child (.-children scene)]
     (.remove scene child))
-  (let [catapult (:catapult world)]
-    (.add scene (make-square (:x catapult) (:y catapult) 0xff0000))))
+  (let [catapult (:catapult world)
+        iceberg (:iceberg world)]
+    (.add scene (make-square (:x catapult) (:y catapult) 0xff0000))
+    (.add scene (make-square (:x iceberg) (:y iceberg) 0x0000ff))))
 
 
 (defn get-time [] (.getTime (js/Date.)))
