@@ -23,10 +23,13 @@
      :scene scene
      :camera camera}))
 
+(defn project-x [x] (- x 2000))
+(defn project-y [y] (- y 800))
+
 (defn make-square-at [x y]
   (let [square (make-square)]
-    (.translateX square (- x 2000))
-    (.translateY square (- y 800))
+    (.translateX square (project-x x))
+    (.translateY square (project-y y))
     square))
 
 (defn update-scene [scene world]
