@@ -1,6 +1,7 @@
 (ns warmit.core
   (:require [jayq.core :refer [$,bind]]
             [warmit.world :as world]))
+
 (declare events)
 (defn make-square []
   (let [geometry (THREE.CubeGeometry. 200 200 50)
@@ -18,7 +19,7 @@
                        1 10000)
       (-> .-position .-z (set! 1000)))]
     (-> js/document .-body (.appendChild (.-domElement renderer)))
-    {:world {:catapult {:x 200 :y 100}}
+    {:world {:catapult {:x 2000 :y 200}}
      :renderer renderer
      :scene scene
      :camera camera}))
@@ -44,7 +45,7 @@
     (reset! events [])
     (update-scene (:scene state) (:world state))
     (js/requestAnimationFrame (partial animate state))
-    (.log js/console (-> state :world :catapult :x))
+    (.log js/console (-> state :world :catapult :x ))
     (.render (:renderer state) (:scene state) (:camera state))
     ))
 
@@ -61,8 +62,8 @@
               (swap! events conj [event value])))]
     (bind ($ js/document) jquery-event-name handler)))
 
-(bind-button-handler "keydown" :pressed)
-(bind-button-handler "keyup" :released)
+(bind-button-handler "keydown" :pressed )
+(bind-button-handler "keyup" :released )
 
 ; Animation
 (animate (make-world))
