@@ -5,11 +5,13 @@
 
 (declare events)
 
-(defn make-water-material []
+(def water-material
   (let [texture (.loadTexture js/THREE.ImageUtils "textures/water1.jpg")]
     (THREE.ShaderMaterial.
       (clj->js {:uniforms {:texture {:type "t"
-                                     :value texture}}
+                                     :value texture}
+                           :t {:type "f"
+                               :value 1.0}}
                 :vertexShader (text ($ :#water-vertex-shader))
                 :fragmentShader (text ($ :#water-fragment-shader))}))))
 
@@ -21,7 +23,7 @@
                     (-> .-position (.set -500 900 600))
                     (-> .-target .-position (.set 2000 0 2000))
                     (-> .-castShadow (set! true)))
-        plane (doto (THREE.Mesh. (THREE.PlaneGeometry. 9000 2000) (make-water-material))
+        plane (doto (THREE.Mesh. (THREE.PlaneGeometry. 9000 2000) water-material)
                     (-> .-overdraw (set! true))
                     (-> .-position .-x (set! 0))
                     (-> .-position .-y (set! 500))
@@ -102,6 +104,11 @@
 
 (defn get-time [] (.getTime (js/Date.)))
 
+(def start-time (atom 0))
+
+(defn update-shaders []
+  (-> water-material .-uniforms .-t .-value (set! (- (get-time) @start-time))))
+
 (defn animate [state last-time]
   (let [cur-time (get-time)
         dt (- cur-time last-time)
@@ -110,6 +117,7 @@
     (reset! events [])
     (update-scene (:scene state) (:world state))
     (js/requestAnimationFrame (partial animate state cur-time))
+    (update-shaders)
     (.render (:renderer state) (:scene state) (:camera state))))
 
 ; Input handling
@@ -129,4 +137,5 @@
 (bind-button-handler "keyup" :released )
 
 ; Animation
+(reset! start-time (get-time))
 (animate (make-world) (get-time))

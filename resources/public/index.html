@@ -1,11 +1,17 @@
 <html>
 <body>
 <script id="water-vertex-shader" type="x-shader/x-vertex">
+  uniform float t;
   varying vec2 textureUv;
+  varying vec4 color;
   
   void main(void) {
     textureUv = uv;
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    vec3 shiftedPosition =
+      vec3(position.x,
+           position.y,
+           position.z + 30.0 * sin(0.005 * t + 0.0003 * position.x));
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(shiftedPosition, 1.0);
   }
 </script>
 <script id="water-fragment-shader" type="x-shader/x-fragment">
