@@ -86,7 +86,9 @@
       (doto (.getChildByName scene "barrel" false)
         (-> .-position .-x (set! (project-x (:x barrel))))
         (-> .-position .-y (set! (project-y (:y barrel))))
-        (-> .-position .-z (set! (:z barrel))))
+        (-> .-position .-z (set! (:z barrel)))
+        (-> .-rotation .-x (set! (:rotation-x barrel)))
+        (-> .-rotation .-y (set! (:rotation-y barrel))))
       (doto (.getChildByName scene "barrel" false)
         (-> .-position .-y (set! (project-y 1000000)))))))
 

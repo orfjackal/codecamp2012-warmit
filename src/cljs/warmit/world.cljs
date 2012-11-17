@@ -12,6 +12,8 @@
             :z 0
             :dz 0
             :dy 0
+            :rotation-x 0
+            :rotation-y 0
             :launched? false
             }
    :iceberg {:speed-x 600, :x -1200
@@ -24,18 +26,16 @@
      (-> barrel
        (update-in [:y] #(+ % (* 20 (-> barrel :dy) (ms-to-s dt))))
        (update-in [:z] #(+ % (* 20 (-> barrel :dz) (ms-to-s dt))))
-       (update-in [:dz] #(- % (* 150 (ms-to-s dt)))))
+       (update-in [:dz] #(- % (* 150 (ms-to-s dt))))
+       (update-in [:rotation-x] #(+ % 0.1))
+       (update-in [:rotation-y] #(+ % 0.1)))
      (-> barrel
        (assoc-in [:launched?] false))))
 
 (defn update-barrel [world dt]
     (if (-> world :barrel :launched?) 
-      (do
-        (.log js/console (-> world :barrel :z))
-        (assoc-in world [:barrel] (next-barrel-position (-> world :barrel) dt))
-        )
+      (assoc-in world [:barrel] (next-barrel-position (-> world :barrel) dt))
       world))
-
 
 (defn fire [world x force t]
     (-> world
