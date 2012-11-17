@@ -17,13 +17,14 @@
 
 (defn make-world []
   (let [scene (THREE.Scene.)
-        renderer (doto (THREE.WebGLRenderer.)
+        renderer (doto (THREE.WebGLRenderer.
+                         (clj->js {:antialias true}))
                        (.setSize 1000 600))
         light (doto (THREE.SpotLight. 0xaabbcc 1,25)
                     (-> .-position (.set -500 900 600))
                     (-> .-target .-position (.set 2000 0 2000))
                     (-> .-castShadow (set! true)))
-        plane (doto (THREE.Mesh. (THREE.PlaneGeometry. 9000 2000) water-material)
+        plane (doto (THREE.Mesh. (THREE.PlaneGeometry. 9000 2000 45 10) water-material)
                     (-> .-overdraw (set! true))
                     (-> .-position .-x (set! 0))
                     (-> .-position .-y (set! 500))

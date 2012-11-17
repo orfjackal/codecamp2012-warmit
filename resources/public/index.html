@@ -10,7 +10,10 @@
     vec3 shiftedPosition =
       vec3(position.x,
            position.y,
-           position.z + 30.0 * sin(0.005 * t + 0.0003 * position.x));
+           position.z + 20.0 * sin(0.005 * t +
+                                   0.003 * position.x)
+                              * sin(0.004 * t +
+                                   0.005 * position.y));
     gl_Position = projectionMatrix * modelViewMatrix * vec4(shiftedPosition, 1.0);
   }
 </script>
