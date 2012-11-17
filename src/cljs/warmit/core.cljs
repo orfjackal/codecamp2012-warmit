@@ -14,7 +14,7 @@
                     (-> .-target .-position (.set 2000 0 2000))
                     (-> .-castShadow (set! true)))
         sea-texture (.loadTexture js/THREE.ImageUtils "textures/water1.jpg")
-        plane (doto (THREE.Mesh. (THREE.PlaneGeometry. 9000 2000) (THREE.MeshBasicMaterial. (clj->js {:map sea-texture, :color 0xddddff})))
+        plane (doto (THREE.Mesh. (THREE.PlaneGeometry. 9000 2000) (THREE.MeshBasicMaterial. (clj->js {:map sea-texture})))
                     (-> .-overdraw (set! true))
                     (-> .-position .-x (set! 0))
                     (-> .-position .-y (set! 500))
@@ -46,7 +46,7 @@
 (defn make-iceberg [x y]
   (let [geometry (THREE.CylinderGeometry. 250 250 40)
         snow-texture (.loadTexture js/THREE.ImageUtils "textures/snow.jpg")
-        material (THREE.MeshBasicMaterial. (clj->js {:map snow-texture, :color 0xaaaaff, :wireframe false}))
+        material (THREE.MeshBasicMaterial. (clj->js {:map snow-texture, :wireframe false}))
         square (THREE.Mesh. geometry material)]
     (.translateX square (project-x x))
     (.translateY square (project-y y))
@@ -56,7 +56,7 @@
 (defn make-barrel [x y]
   (let [geometry (THREE.CylinderGeometry. 60 60 80)
         barrel-texture (.loadTexture js/THREE.ImageUtils "textures/barrel1.jpg")
-        material (THREE.MeshBasicMaterial. (clj->js {:map barrel-texture, :color 0x00ee00, :wireframe false}))
+        material (THREE.MeshBasicMaterial. (clj->js {:map barrel-texture, :wireframe false}))
         square (THREE.Mesh. geometry material)]
     (.translateX square (project-x x))
     (.translateY square (project-y y)) 
