@@ -22,7 +22,7 @@
 (defn ms-to-s [ms] (* ms 0.001))
 
 (defn next-barrel-position [barrel dt]
-  (if (> (-> barrel :z) -5)
+  (if (> (-> barrel :z) -100)
      (-> barrel
        (update-in [:y] #(+ % (* 20 (-> barrel :dy) (ms-to-s dt))))
        (update-in [:z] #(+ % (* 20 (-> barrel :dz) (ms-to-s dt))))
