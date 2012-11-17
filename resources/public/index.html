@@ -1,5 +1,21 @@
 <html>
 <body>
+<script id="water-vertex-shader" type="x-shader/x-vertex">
+  varying vec2 textureUv;
+  
+  void main(void) {
+    textureUv = uv;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  }
+</script>
+<script id="water-fragment-shader" type="x-shader/x-fragment">
+  uniform sampler2D texture;
+  varying vec2 textureUv;
+  
+  void main(void) {
+    gl_FragColor = texture2D(texture, textureUv);
+  }
+</script>
 <script src="js/jquery-1.8.2.min.js"></script>
 <script src="js/three.min.js"></script>
 <script src="js/cljs.js"></script>

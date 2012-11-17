@@ -1,9 +1,17 @@
 (ns warmit.core
-  (:require [jayq.core :refer [$ bind]]
+  (:require [jayq.core :refer [$ bind text]]
             [jayq.util :refer [clj->js]]
             [warmit.world :as world]))
 
 (declare events)
+
+(defn make-water-material []
+  (let [texture (.loadTexture js/THREE.ImageUtils "textures/water1.jpg")]
+    (THREE.ShaderMaterial.
+      (clj->js {:uniforms {:texture {:type "t"
+                                     :value texture}}
+                :vertexShader (text ($ :#water-vertex-shader))
+                :fragmentShader (text ($ :#water-fragment-shader))}))))
 
 (defn make-world []
   (let [scene (THREE.Scene.)
@@ -13,8 +21,7 @@
                     (-> .-position (.set -500 900 600))
                     (-> .-target .-position (.set 2000 0 2000))
                     (-> .-castShadow (set! true)))
-        sea-texture (.loadTexture js/THREE.ImageUtils "textures/water1.jpg")
-        plane (doto (THREE.Mesh. (THREE.PlaneGeometry. 9000 2000) (THREE.MeshBasicMaterial. (clj->js {:map sea-texture})))
+        plane (doto (THREE.Mesh. (THREE.PlaneGeometry. 9000 2000) (make-water-material))
                     (-> .-overdraw (set! true))
                     (-> .-position .-x (set! 0))
                     (-> .-position .-y (set! 500))
