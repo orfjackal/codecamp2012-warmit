@@ -55,7 +55,8 @@
 
 (defn make-barrel [x y]
   (let [geometry (THREE.CylinderGeometry. 60 60 80)
-        material (THREE.MeshBasicMaterial. (clj->js {:color 0x00ee00, :wireframe false}))
+        barrel-texture (.loadTexture js/THREE.ImageUtils "textures/barrel1.jpg")
+        material (THREE.MeshBasicMaterial. (clj->js {:map barrel-texture, :color 0x00ee00, :wireframe false}))
         square (THREE.Mesh. geometry material)]
     (.translateX square (project-x x))
     (.translateY square (project-y y)) 
