@@ -5,7 +5,7 @@ A game made in a single day.
 
 ## Gameplay
 
-Down arrow to arm catapult, space to shoot!
+Press space to arm catapult, release to shoot!
 
 
 ## Starting the server
